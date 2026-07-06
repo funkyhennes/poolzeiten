@@ -185,6 +185,12 @@ footer button{
 </svg>
 
 <main>
+  <div id="localWarn" style="display:none;background:#FFF3D6;border:1.5px solid #F5D68A;color:#8A6100;border-radius:var(--radius);padding:12px 14px;font-size:13.5px;line-height:1.45;margin-bottom:18px;">
+    <strong>⚠ Nur-lokal-Modus:</strong> Einträge sind nur auf diesem Gerät sichtbar.
+    Damit alle dieselben Daten sehen, müssen in der Datei (CONFIG-Block) die
+    jsonbin.io-Zugangsdaten eingetragen werden.
+  </div>
+
   <!-- Admin-Bereich -->
   <section id="adminBar">
     <h3>Admin: Zeitfenster anlegen <button onclick="adminLogout()">Abmelden</button></h3>
@@ -226,8 +232,8 @@ const CONFIG = {
   // 3. Bin-ID hier eintragen
   // 4. Unter "API Keys" einen ACCESS KEY (nicht Master Key!) mit
   //    Rechten "Read" + "Update" erstellen und hier eintragen
-  JSONBIN_BIN_ID: "",
-  JSONBIN_ACCESS_KEY: "",
+  JSONBIN_BIN_ID: "6a4ba096da38895dfe34f104",
+  JSONBIN_ACCESS_KEY: "$2a$10$onppmyGQ38vQzh.uf8NNU.kTMw/SxgTWKEs.rYCUZbxJK5JHlNCR6",
   // Standort für die Wetterprognose (Königswinter)
   LAT: 50.684,
   LON: 7.189
@@ -473,6 +479,7 @@ function setSync(txt){ document.getElementById("syncState").textContent = txt; }
 
 /* ---------------- Start ---------------- */
 async function loadAll(manual){
+  document.getElementById("localWarn").style.display = useCloud() ? "none" : "block";
   try{
     setSync("lädt…");
     await Promise.all([loadData(), loadWeather()]);
