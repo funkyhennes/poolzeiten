@@ -18,7 +18,6 @@
   --linie:#C9E2EC;
   --sonne:#FFB703;
   --signal:#E4572E;
-  --gras:#2E8B57;
   --radius:14px;
 }
 *{margin:0;padding:0;box-sizing:border-box}
@@ -35,7 +34,6 @@ header{
   background:var(--wasser);
   color:#fff;
   padding:calc(env(safe-area-inset-top,0px) + 22px) 20px 0;
-  position:relative;
 }
 header h1{
   font-family:'Bricolage Grotesque',sans-serif;
@@ -51,6 +49,17 @@ header .sub{
 }
 .wave{display:block;width:100%;height:26px;margin-bottom:-1px}
 #syncState{font-size:12px;padding:2px 9px;border-radius:99px;background:rgba(255,255,255,.18)}
+/* ---------- Tabs ---------- */
+nav{
+  max-width:640px;margin:14px auto 0;padding:0 16px;
+  display:flex;gap:8px;
+}
+nav button{
+  flex:1;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:15px;
+  padding:10px;border-radius:11px;border:1.5px solid var(--linie);
+  background:var(--kachel);color:#5E7E8C;cursor:pointer;
+}
+nav button.on{background:var(--tiefe);border-color:var(--tiefe);color:#fff}
 /* ---------- Layout ---------- */
 main{max-width:640px;margin:0 auto;padding:18px 16px 0}
 .dayGroup{margin-bottom:26px}
@@ -64,10 +73,8 @@ main{max-width:640px;margin:0 auto;padding:18px 16px 0}
 }
 .dayHead .rel{font-size:13px;color:var(--wasser);font-weight:500}
 /* ---------- Wetter ---------- */
-.wx{
-  display:flex;gap:6px;flex-wrap:wrap;align-items:center;
-}
-.wx .chip{
+.wx{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.wx .chip, .hourly .chip{
   display:inline-flex;align-items:center;gap:5px;
   font-size:12.5px;font-weight:700;
   padding:4px 10px;border-radius:99px;
@@ -78,6 +85,11 @@ main{max-width:640px;margin:0 auto;padding:18px 16px 0}
 .chip.rain-mid{border-color:#F5D68A;background:#FFF7E0;color:#8A6100}
 .chip.rain-hi{border-color:#F3B7A5;background:#FDEEE8;color:#A33417}
 .chip.na{color:#7C97A3;font-weight:500}
+.hourly{
+  display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;
+}
+.hourly .chip{background:var(--becken);border-color:transparent;font-weight:700}
+.hourly .chip small{font-weight:500;color:#5E7E8C;margin-right:2px}
 /* ---------- Slot Cards ---------- */
 .slot{
   background:var(--kachel);
@@ -95,9 +107,7 @@ main{max-width:640px;margin:0 auto;padding:18px 16px 0}
 .cap{font-size:13px;font-weight:700;color:var(--wasser);white-space:nowrap}
 .cap.voll{color:var(--signal)}
 .badges{margin-top:6px;display:flex;gap:6px;flex-wrap:wrap}
-.badge{
-  font-size:12px;font-weight:700;padding:3px 10px;border-radius:99px;
-}
+.badge{font-size:12px;font-weight:700;padding:3px 10px;border-radius:99px}
 .badge.andreas{background:#EAF7EE;color:#1E6B41}
 .badge.aufsicht{background:#FFF3D6;color:#8A6100}
 /* Buchungen */
@@ -108,9 +118,7 @@ main{max-width:640px;margin:0 auto;padding:18px 16px 0}
 }
 .buchung .who{font-weight:700}
 .buchung .meta{color:#4A6B7A;font-size:12.5px}
-.buchung button{
-  background:none;border:none;color:#9AB4BF;font-size:16px;cursor:pointer;padding:4px;
-}
+.buchung button{background:none;border:none;color:#9AB4BF;font-size:16px;cursor:pointer;padding:4px}
 /* Buttons */
 .btn{
   font-family:inherit;font-size:15px;font-weight:700;
@@ -119,7 +127,6 @@ main{max-width:640px;margin:0 auto;padding:18px 16px 0}
 }
 .btn:active{transform:scale(.97)}
 .btn.primary{background:var(--sonne);color:var(--tiefe);width:100%;margin-top:12px}
-.btn.ghost{background:var(--becken);color:var(--wasser)}
 .btn.danger{background:#FDEEE8;color:#A33417}
 .btn:disabled{opacity:.45;cursor:default}
 /* Formulare */
@@ -133,9 +140,11 @@ input,select{
 }
 input:focus,select:focus{outline:2px solid var(--wasser);outline-offset:-1px;border-color:var(--wasser)}
 .hint{font-size:12.5px;color:#4A6B7A;line-height:1.4}
-.leer{
-  text-align:center;color:#5E7E8C;padding:50px 20px;font-size:15px;line-height:1.5;
-}
+.leer{text-align:center;color:#5E7E8C;padding:50px 20px;font-size:15px;line-height:1.5}
+/* ---------- Archiv ---------- */
+#archFilter{display:flex;gap:9px;margin-bottom:18px}
+#archFilter select{flex:1}
+.archSlot .slotTime{font-size:18px}
 /* ---------- Admin ---------- */
 #adminBar{
   display:none;background:var(--tiefe);color:#fff;border-radius:var(--radius);
@@ -149,6 +158,18 @@ input:focus,select:focus{outline:2px solid var(--wasser);outline-offset:-1px;bor
 #adminBar label{color:#9FC3D2}
 #adminBar input,#adminBar select{border-color:transparent}
 .slot .adminDel{margin-top:10px;width:100%}
+/* Statistik (nur Admin) */
+#statsBox{
+  display:none;background:var(--tiefe);color:#fff;border-radius:var(--radius);
+  padding:16px;margin-bottom:22px;
+}
+#statsBox.on{display:block}
+#statsBox h3{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;margin-bottom:10px}
+#statsBox table{width:100%;border-collapse:collapse;font-size:14px}
+#statsBox th{text-align:left;color:#9FC3D2;font-size:12px;font-weight:700;padding:4px 6px;border-bottom:1px solid rgba(255,255,255,.15)}
+#statsBox td{padding:7px 6px;border-bottom:1px solid rgba(255,255,255,.08)}
+#statsBox td.num,#statsBox th.num{text-align:right}
+#statsBox .rank{color:var(--sonne);font-weight:800}
 /* Footer */
 footer{
   position:fixed;bottom:0;left:0;right:0;
@@ -157,9 +178,7 @@ footer{
   background:linear-gradient(to top,var(--becken) 65%,transparent);
   max-width:640px;margin:0 auto;
 }
-footer button{
-  background:none;border:none;color:#7C97A3;font-size:13px;font-weight:700;cursor:pointer;padding:8px;
-}
+footer button{background:none;border:none;color:#7C97A3;font-size:13px;font-weight:700;cursor:pointer;padding:8px}
 /* Toast */
 #toast{
   position:fixed;left:50%;bottom:80px;transform:translateX(-50%) translateY(20px);
@@ -184,12 +203,20 @@ footer button{
   <path d="M0,0 C80,26 160,26 240,13 C320,0 400,0 480,13 C560,26 600,26 640,13 L640,0 Z" fill="#0E7DA0"/>
 </svg>
 
+<nav>
+  <button id="tabAktuell" class="on" onclick="setView('aktuell')">Aktuell</button>
+  <button id="tabArchiv" onclick="setView('archiv')">Archiv</button>
+</nav>
+
 <main>
   <div id="localWarn" style="display:none;background:#FFF3D6;border:1.5px solid #F5D68A;color:#8A6100;border-radius:var(--radius);padding:12px 14px;font-size:13.5px;line-height:1.45;margin-bottom:18px;">
     <strong>⚠ Nur-lokal-Modus:</strong> Einträge sind nur auf diesem Gerät sichtbar.
     Damit alle dieselben Daten sehen, müssen in der Datei (CONFIG-Block) die
     jsonbin.io-Zugangsdaten eingetragen werden.
   </div>
+
+  <!-- Statistik (nur Admin sichtbar) -->
+  <section id="statsBox"></section>
 
   <!-- Admin-Bereich -->
   <section id="adminBar">
@@ -209,7 +236,7 @@ footer button{
     <button class="btn primary" onclick="addSlot()">Zeitfenster anlegen</button>
   </section>
 
-  <div id="slotList"></div>
+  <div id="content"></div>
 </main>
 
 <footer>
@@ -221,19 +248,19 @@ footer button{
 
 <script>
 /* ================================================================
-   KONFIGURATION – vor dem Veröffentlichen anpassen
+   KONFIGURATION
    ================================================================ */
 const CONFIG = {
   ADMIN_PIN: "1234",          // Admin-PIN ändern!
-  // Gemeinsamer Speicher über jsonbin.io (kostenlos):
-  // 1. Account anlegen: https://jsonbin.io/register
-  //    (Login später: https://jsonbin.io/login)
-  // 2. Neuen Bin erstellen mit Inhalt: {"slots":[],"bookings":[]}
-  // 3. Bin-ID hier eintragen
-  // 4. Unter "API Keys" einen ACCESS KEY (nicht Master Key!) mit
-  //    Rechten "Read" + "Update" erstellen und hier eintragen
   JSONBIN_BIN_ID: "6a4ba096da38895dfe34f104",
   JSONBIN_ACCESS_KEY: "$2a$10$onppmyGQ38vQzh.uf8NNU.kTMw/SxgTWKEs.rYCUZbxJK5JHlNCR6",
+  // ---- Push-Benachrichtigung aufs iPhone via ntfy.sh ----
+  // 1. Kostenlose App "ntfy" aus dem App Store laden
+  // 2. In der App auf "+" und dieses Topic abonnieren:
+  NTFY_TOPIC: "poolzeiten-andreas-x7k2m9q4",
+  // (Topic ist wie ein Passwort – wer es kennt, kann mitlesen.
+  //  Bei Bedarf hier einen eigenen zufälligen Namen eintragen
+  //  und in der App das gleiche Topic abonnieren.)
   // Standort für die Wetterprognose (Königswinter)
   LAT: 50.684,
   LON: 7.189
@@ -242,9 +269,13 @@ const CONFIG = {
 
 const useCloud = () => CONFIG.JSONBIN_BIN_ID && CONFIG.JSONBIN_ACCESS_KEY;
 let state = { slots: [], bookings: [] };
-let weather = {};          // "YYYY-MM-DD" -> {tmin,tmax,rain,sun}
+let wxDay = {};     // "YYYY-MM-DD"       -> {rain, sun}
+let wxHour = {};    // "YYYY-MM-DDTHH:00" -> temp
 let isAdmin = false;
 let openFormSlot = null;
+let view = "aktuell";
+let archYear = null, archMonth = null;
+const MONATE = ["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
 
 /* ---------------- Speicher ---------------- */
 async function loadData(){
@@ -272,34 +303,70 @@ async function saveData(){
   }
 }
 
-/* ---------------- Wetter (Open-Meteo, kein Key nötig) ---------------- */
+/* ---------------- Push via ntfy.sh ---------------- */
+async function notify(text){
+  if(!CONFIG.NTFY_TOPIC) return;
+  try{
+    await fetch(`https://ntfy.sh/${CONFIG.NTFY_TOPIC}`, {
+      method:"POST",
+      headers:{ "Title":"Poolzeiten", "Tags":"swimmer" },
+      body: text
+    });
+  }catch(e){ /* Push ist optional – Fehler still ignorieren */ }
+}
+
+/* ---------------- Wetter (Open-Meteo) ---------------- */
 async function loadWeather(){
   try{
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${CONFIG.LAT}&longitude=${CONFIG.LON}`
-      + `&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunshine_duration`
+      + `&hourly=temperature_2m`
+      + `&daily=precipitation_probability_max,sunshine_duration`
       + `&timezone=Europe%2FBerlin&forecast_days=16`;
     const r = await fetch(url);
     const j = await r.json();
-    weather = {};
+    wxDay = {}; wxHour = {};
     (j.daily?.time || []).forEach((d,i)=>{
-      weather[d] = {
-        tmax: Math.round(j.daily.temperature_2m_max[i]),
-        tmin: Math.round(j.daily.temperature_2m_min[i]),
+      wxDay[d] = {
         rain: j.daily.precipitation_probability_max[i],
         sun:  Math.round(j.daily.sunshine_duration[i] / 3600 * 10) / 10
       };
     });
-  }catch(e){ weather = {}; }
+    (j.hourly?.time || []).forEach((t,i)=>{
+      wxHour[t] = Math.round(j.hourly.temperature_2m[i]);
+    });
+  }catch(e){ wxDay = {}; wxHour = {}; }
 }
-function wxHtml(dateStr){
-  const w = weather[dateStr];
+function dayWxHtml(dateStr){
+  const w = wxDay[dateStr];
   if(!w) return `<div class="wx"><span class="chip na">keine Prognose verfügbar</span></div>`;
   const rc = w.rain >= 60 ? "rain-hi" : w.rain >= 30 ? "rain-mid" : "rain-lo";
   return `<div class="wx">
-    <span class="chip">🌡️ ${w.tmin}–${w.tmax}°C</span>
     <span class="chip ${rc}">🌧️ ${w.rain ?? "–"}%</span>
-    <span class="chip sun">☀️ ${w.sun} h</span>
+    <span class="chip sun">☀️ ${w.sun} h Sonne</span>
   </div>`;
+}
+/* Stündliche Temperatur für die Dauer eines Slots */
+function slotTempsHtml(s){
+  const h0 = parseInt(s.start.slice(0,2), 10);
+  let h1 = parseInt(s.end.slice(0,2), 10);
+  if(parseInt(s.end.slice(3,5),10) > 0) h1 += 1;   // angebrochene Endstunde mitnehmen
+  const chips = [];
+  for(let h = h0; h <= h1 && chips.length < 8; h++){
+    const key = `${s.date}T${String(h).padStart(2,"0")}:00`;
+    if(wxHour[key] !== undefined){
+      chips.push(`<span class="chip"><small>${h} Uhr</small>${wxHour[key]}°</span>`);
+    }
+  }
+  return chips.length ? `<div class="hourly">${chips.join("")}</div>` : "";
+}
+
+/* ---------------- Ansicht wechseln ---------------- */
+function setView(v){
+  view = v;
+  document.getElementById("tabAktuell").classList.toggle("on", v==="aktuell");
+  document.getElementById("tabArchiv").classList.toggle("on", v==="archiv");
+  document.getElementById("adminBar").classList.toggle("on", isAdmin && v==="aktuell");
+  render();
 }
 
 /* ---------------- Rendering ---------------- */
@@ -310,26 +377,29 @@ function relDay(d){
   return diff===0 ? "Heute" : diff===1 ? "Morgen" : "";
 }
 function render(){
-  const list = document.getElementById("slotList");
+  renderStats();
+  const el = document.getElementById("content");
+  el.innerHTML = view === "aktuell" ? renderAktuell() : renderArchiv();
+}
+
+/* ----- Aktuelle Slots ----- */
+function renderAktuell(){
   const today = new Date().toISOString().slice(0,10);
   const slots = state.slots
     .filter(s => s.date >= today)
     .sort((a,b) => (a.date+a.start).localeCompare(b.date+b.start));
-
   if(!slots.length){
-    list.innerHTML = `<div class="leer">Noch keine Zeitfenster geplant.<br>Schau später nochmal vorbei! 🏊</div>`;
-    return;
+    return `<div class="leer">Noch keine Zeitfenster geplant.<br>Schau später nochmal vorbei! 🏊</div>`;
   }
   const byDate = {};
   slots.forEach(s => (byDate[s.date] ??= []).push(s));
-
-  list.innerHTML = Object.entries(byDate).map(([date, daySlots]) => `
+  return Object.entries(byDate).map(([date, daySlots]) => `
     <section class="dayGroup">
       <div class="dayHead">
         <h2>${fmtDate(date)}</h2>
         <span class="rel">${relDay(date)}</span>
       </div>
-      ${wxHtml(date)}
+      ${dayWxHtml(date)}
       <div style="height:10px"></div>
       ${daySlots.map(slotHtml).join("")}
     </section>`).join("");
@@ -349,6 +419,7 @@ function slotHtml(s){
       <span class="cap ${voll?"voll":""}">${voll ? "Belegt" : frei+" von "+s.maxPersonen+" frei"}</span>
     </div>
     <div class="badges">${aufsichtBadge}</div>
+    ${slotTempsHtml(s)}
     ${bks.length ? `<div class="buchungen">${bks.map(b=>`
       <div class="buchung">
         <div>
@@ -373,6 +444,95 @@ function slotHtml(s){
     ${isAdmin ? `<button class="btn danger adminDel" onclick="deleteSlot('${s.id}')">Slot löschen (Admin)</button>` : ""}
   </article>`;
 }
+
+/* ----- Archiv (für alle sichtbar) ----- */
+function pastSlots(){
+  const today = new Date().toISOString().slice(0,10);
+  return state.slots.filter(s => s.date < today);
+}
+function renderArchiv(){
+  const past = pastSlots();
+  if(!past.length){
+    return `<div class="leer">Noch keine vergangenen Poolzeiten.<br>Das Archiv füllt sich mit der Zeit. 📚</div>`;
+  }
+  const years = [...new Set(past.map(s => s.date.slice(0,4)))].sort().reverse();
+  if(!archYear || !years.includes(archYear)) archYear = years[0];
+  const months = [...new Set(past.filter(s => s.date.startsWith(archYear)).map(s => s.date.slice(5,7)))].sort().reverse();
+  if(!archMonth || !months.includes(archMonth)) archMonth = months[0];
+
+  const sel = past
+    .filter(s => s.date.startsWith(`${archYear}-${archMonth}`))
+    .sort((a,b) => (b.date+b.start).localeCompare(a.date+a.start));
+  const byDate = {};
+  sel.forEach(s => (byDate[s.date] ??= []).push(s));
+
+  return `
+    <div id="archFilter">
+      <select onchange="archYear=this.value;archMonth=null;render()">
+        ${years.map(y=>`<option value="${y}" ${y===archYear?"selected":""}>${y}</option>`).join("")}
+      </select>
+      <select onchange="archMonth=this.value;render()">
+        ${months.map(m=>`<option value="${m}" ${m===archMonth?"selected":""}>${MONATE[Number(m)-1]}</option>`).join("")}
+      </select>
+    </div>
+    ${Object.entries(byDate).map(([date, daySlots]) => `
+      <section class="dayGroup">
+        <div class="dayHead"><h2>${fmtDate(date)}</h2></div>
+        ${daySlots.map(archSlotHtml).join("")}
+      </section>`).join("")}`;
+}
+function archSlotHtml(s){
+  const bks = state.bookings.filter(b => b.slotId === s.id);
+  const personen = bks.reduce((n,b) => n + Number(b.personen||1), 0);
+  return `
+  <article class="slot archSlot">
+    <div class="slotTop">
+      <span class="slotTime">${s.start}–${s.end} Uhr</span>
+      <span class="cap">${personen} Pers.</span>
+    </div>
+    ${bks.length ? `<div class="buchungen">${bks.map(b=>`
+      <div class="buchung">
+        <div>
+          <span class="who">${esc(b.name)}</span>
+          <span class="meta">· ${b.personen} Pers.${b.aufsichtsperson ? " · Aufsicht: "+esc(b.aufsichtsperson) : ""}</span>
+        </div>
+      </div>`).join("")}</div>`
+    : `<p class="hint" style="margin-top:8px">Keine Einträge – Slot blieb frei.</p>`}
+  </article>`;
+}
+
+/* ----- Statistik (nur Admin) ----- */
+function renderStats(){
+  const box = document.getElementById("statsBox");
+  if(!isAdmin){ box.classList.remove("on"); box.innerHTML=""; return; }
+  const slotById = Object.fromEntries(state.slots.map(s=>[s.id,s]));
+  const agg = {};
+  state.bookings.forEach(b=>{
+    const key = b.name.trim().toLowerCase();
+    if(!key) return;
+    agg[key] ??= { name: b.name.trim(), eintraege: 0, personen: 0, letzter: "" };
+    agg[key].eintraege += 1;
+    agg[key].personen += Number(b.personen||1);
+    const d = slotById[b.slotId]?.date || "";
+    if(d > agg[key].letzter) agg[key].letzter = d;
+  });
+  const rows = Object.values(agg).sort((a,b)=> b.eintraege - a.eintraege || b.personen - a.personen);
+  box.classList.add("on");
+  box.innerHTML = `
+    <h3>📊 Statistik – wer war am häufigsten da?</h3>
+    ${rows.length ? `<table>
+      <tr><th>#</th><th>Name</th><th class="num">Einträge</th><th class="num">Personen</th><th class="num">Zuletzt</th></tr>
+      ${rows.map((r,i)=>`
+        <tr>
+          <td class="rank">${i+1}</td>
+          <td>${esc(r.name)}</td>
+          <td class="num">${r.eintraege}</td>
+          <td class="num">${r.personen}</td>
+          <td class="num">${r.letzter ? new Date(r.letzter+"T12:00").toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit",year:"2-digit"}) : "–"}</td>
+        </tr>`).join("")}
+    </table>` : `<p class="hint" style="color:#9FC3D2">Noch keine Buchungen vorhanden.</p>`}`;
+}
+
 const esc = t => String(t).replace(/[<>&"]/g, c => ({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]));
 
 /* ---------------- Aktionen ---------------- */
@@ -390,13 +550,20 @@ async function book(slotId){
   if(!name) return toast("Bitte Namen eintragen");
   if(s.aufsicht === "noetig" && !aufsicht) return toast("Aufsichtsperson fehlt");
 
+  let gebucht = false;
   await withSync(async () => {
     const belegt = state.bookings.filter(b=>b.slotId===slotId)
       .reduce((n,b)=>n+Number(b.personen||1),0);
     if(belegt + personen > s.maxPersonen){ toast("Slot ist inzwischen voll"); return false; }
     state.bookings.push({ id: uid(), slotId, name, personen, aufsichtsperson: aufsicht, ts: Date.now() });
+    gebucht = true;
     return true;
   }, "Eingetragen! 🏊");
+  if(gebucht){
+    notify(`${name} (${personen} Pers.) hat sich eingetragen: `
+      + `${fmtDate(s.date)}, ${s.start}–${s.end} Uhr`
+      + (aufsicht ? ` · Aufsicht: ${aufsicht}` : ""));
+  }
   openFormSlot = null;
   render();
 }
@@ -404,10 +571,12 @@ async function cancelBooking(id){
   const b = state.bookings.find(x=>x.id===id);
   if(!b) return;
   if(!confirm(`Buchung von ${b.name} stornieren?`)) return;
+  const s = state.slots.find(x=>x.id===b.slotId);
   await withSync(async () => {
     state.bookings = state.bookings.filter(x=>x.id!==id);
     return true;
   }, "Storniert");
+  if(s) notify(`Storniert: ${b.name} am ${fmtDate(s.date)}, ${s.start}–${s.end} Uhr`);
   render();
 }
 async function addSlot(){
@@ -453,7 +622,7 @@ function adminLogin(){
   const pin = prompt("Admin-PIN:");
   if(pin === CONFIG.ADMIN_PIN){
     isAdmin = true;
-    document.getElementById("adminBar").classList.add("on");
+    if(view === "aktuell") document.getElementById("adminBar").classList.add("on");
     document.getElementById("adminToggle").textContent = "Admin ✓";
     document.getElementById("aDate").value = new Date().toISOString().slice(0,10);
     render();
